@@ -4,52 +4,57 @@ package com.ty.school.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.Persistence; 
 
-import com.ty.school.dto.User;
+import com.ty.school.dto.Student;
 
-public class UserDao {
-	EntityManagerFactory entityManagerFactory;
+public class StudentDao {
+	EntityManagerFactory entityManagerFactory=null;
 	
-	public void saveUser(User u)
+	public Student saveStudent(Student s)
 	{
 		entityManagerFactory=Persistence.createEntityManagerFactory("vikas");
 		EntityManager entityManager=entityManagerFactory.createEntityManager();
 		EntityTransaction entityTransaction=entityManager.getTransaction();
 		entityTransaction.begin();
-		entityManager.persist(u);
+		entityManager.persist(s);
 		entityTransaction.commit();
-	}
-	public User findUserById(int id)
-	{
-		entityManagerFactory=Persistence.createEntityManagerFactory("vikas");
-		EntityManager entityManager=entityManagerFactory.createEntityManager();
-		User user=entityManager.find(User.class, id);
-		return user;
+		return s;
 		
 	}
-	public boolean deleteUser(int id)
+	public Student findStudent(int id)
 	{
 		entityManagerFactory=Persistence.createEntityManagerFactory("vikas");
 		EntityManager entityManager=entityManagerFactory.createEntityManager();
+		Student s=entityManager.find(Student.class, id);
+		return s;
+		
+	}
+	public boolean deleteStudent(int id)
+	{
+		entityManagerFactory=Persistence.createEntityManagerFactory("vikas");
+		EntityManager entityManager=entityManagerFactory.createEntityManager();
+		Student s=entityManager.find(Student.class, id);
 		EntityTransaction entityTransaction=entityManager.getTransaction();
-		User user=entityManager.find(User.class,id);
-		if (user!=null) {
-			entityManager.remove(user);
+		if (s!=null) {
+			entityTransaction.begin();
+			entityManager.remove(s);
+			entityTransaction.commit();
 			return true;
 		}
 		return false;
+		
 	}
-	public User updateUser(User user)
+	public Student updateStudent(Student s)
 	{
 		entityManagerFactory=Persistence.createEntityManagerFactory("vikas");
 		EntityManager entityManager=entityManagerFactory.createEntityManager();
 		EntityTransaction entityTransaction=entityManager.getTransaction();
 		entityTransaction.begin();
-		User user2=entityManager.merge(user);
+		Student s1=entityManager.merge(s);
 		entityTransaction.commit();
-		return user2;
-				
+		return s1;
+		
 	}
 
 }
